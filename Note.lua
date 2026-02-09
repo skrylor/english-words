@@ -133,6 +133,66 @@ local lastInputTime = 0
 local LIST_DEBOUNCE = 0.05
 local currentBestMatch = nil
 
+-- ┌──────────────────────────────────────────────────────────────┐
+-- │  High-priority endings list (all get the same score = 10)    │
+-- └──────────────────────────────────────────────────────────────┘
+local HighPriorityEndings = {
+	aan = 10, abau = 10, abbi = 10, abev = 10, abic = 10, abim = 10, abin = 10, abis = 10,
+	abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10,
+	-- ... (you can paste the entire long list here)
+	-- For brevity in this message I'm not repeating all ~1400 entries
+	hl = 10, sz = 10, nk = 10, fs = 10, rg = 10, yf = 10, pf = 10, sb = 10, mg = 10
+}
+
+-- Helper: check if word ends with any high-priority suffix
+local function GetHighPriorityEndingBonus(word)
+	local len = #word
+	if len < 2 then return 0 end
+
+	-- Check 4-letter, 3-letter, 2-letter endings in that order (longer = usually stronger)
+	for suffixLen = 4, 2, -1 do
+		if len >= suffixLen then
+			local ending = word:sub(-suffixLen)
+			if HighPriorityEndings[ending] then
+				return HighPriorityEndings[ending]   -- returns 10
+			end
+		end
+	end
+
+	return 0
+end
+
+elseif sortMode == "Sartre" then
+	table.sort(matches, function(a, b)
+		-- Primary: high-priority ending bonus (10 vs 0)
+		local bonusA = GetHighPriorityEndingBonus(a)
+		local bonusB = GetHighPriorityEndingBonus(b)
+
+		if bonusA ~= bonusB then
+			return bonusA > bonusB   -- words with bonus=10 come first
+		end
+
+		-- Secondary: existing Sartre score (hard last letter)
+		local sa = GetSartreScore(a)
+		local sb = GetSartreScore(b)
+		if sa ~= sb then
+			return sa > sb
+		end
+
+		-- Tertiary: shorter words first (or change to #a > #b if you prefer longer)
+		return #a < #b
+	end)
+
+	local HighPrioritySet = {}
+	for k,_ in pairs(HighPriorityEndings) do
+		HighPrioritySet[k] = true
+	end
+
+	-- Then in function:
+	if HighPrioritySet[word:sub(-4)] or HighPrioritySet[word:sub(-3)] or HighPrioritySet[word:sub(-2)] then
+		return 10
+	end
+
 if logConn then logConn:Disconnect() end
 logConn = LogService.MessageOut:Connect(function(message, type)
 	local wordPart, timePart = message:match("Word:%s*([A-Za-z]+)%s+Time to respond:%s*(%d+)")
