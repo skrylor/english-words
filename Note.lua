@@ -153,12 +153,6 @@ local function GetHighPriorityEndingBonus(word)
 	for suffixLen = 4, 2, -1 do
 		if len >= suffixLen then
 			local ending = word:sub(-suffixLen)
-			if HighPriorityEndings[ending] then
-				return HighPriorityEndings[ending]   -- returns 10
-			end
-		end
-	end
-
 	return 0
 end
 
