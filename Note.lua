@@ -995,8 +995,6 @@ local SortBtn = CreateToggle("Sort: "..sortMode, UDim2.new(0, 15, 0, 33), functi
 	if sortMode == "Random" then sortMode = "Shortest"
 	elseif sortMode == "Shortest" then sortMode = "Longest"
 	elseif sortMode == "Longest" then sortMode = "Sartre"
-	elseif sortMode == "Sartre" then sortMode = "Rbt"
-	elseif sortMode == "Rbt" then sortMode = "Salva"
 	else sortMode = "Random" end
 
 	Config.SortMode = sortMode
