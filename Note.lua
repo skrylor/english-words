@@ -995,6 +995,7 @@ local SortBtn = CreateToggle("Sort: "..sortMode, UDim2.new(0, 15, 0, 33), functi
 	if sortMode == "Random" then sortMode = "Shortest"
 	elseif sortMode == "Shortest" then sortMode = "Longest"
 	elseif sortMode == "Longest" then sortMode = "Sartre"
+	elseif sortMode == "Rbt" then sortMode = "Salva"
 	else sortMode = "Random" end
 
 	Config.SortMode = sortMode
@@ -2330,7 +2331,23 @@ UpdateList = function(detectedText, requiredLetter)
 					return #a < #b
 				end
 				return sA > sB
+		elseif sortMode == "Salva" then
+			table.sort(matches, function(a, b)
+				local sA = GetSalvaScore(a)
+				local sB = GetSalvaScore(b)
+				if sA == sB then
+					return #a < #b
+				end
+				return sA > sB
 			end)
+		elseif sortMode == "Rbt" then
+			table.sort(matches, function(a, b)
+				local sA = GetRbtScore(a)
+				local sB = GetRbtScore(b)
+				if sA == sB then
+					return #a < #b
+				end
+				return sA > sB
 		end
 	end
 
