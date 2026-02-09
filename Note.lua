@@ -278,55 +278,6 @@ local HighPriorityEndings = {
 	-- For brevity in this message I'm not repeating all ~1400 entries
 	hl = 10, sz = 10, nk = 10, fs = 10, rg = 10, yf = 10, pf = 10, sb = 10, mg = 10
 }
-
--- Helper: check if word ends with any high-priority suffix
-local function GetHighPriorityEndingBonus(word)
-	local len = #word
-	if len < 2 then return 0 end
-
-	-- Check 4-letter, 3-letter, 2-letter endings in that order (longer = usually stronger)
-	for suffixLen = 4, 2, -1 do
-		if len >= suffixLen then
-			local ending = word:sub(-suffixLen)
-			if HighPriorityEndings[ending] then
-				return HighPriorityEndings[ending]   -- returns 10
-			end
-		end
-	end
-
-	return 0
-end
-
-elseif sortMode == "Sartre" then
-	table.sort(matches, function(a, b)
-		-- Primary: high-priority ending bonus (10 vs 0)
-		local bonusA = GetHighPriorityEndingBonus(a)
-		local bonusB = GetHighPriorityEndingBonus(b)
-
-		if bonusA ~= bonusB then
-			return bonusA > bonusB   -- words with bonus=10 come first
-		end
-
-		-- Secondary: existing Sartre score (hard last letter)
-		local sa = GetSartreScore(a)
-		local sb = GetSartreScore(b)
-		if sa ~= sb then
-			return sa > sb
-		end
-
-		-- Tertiary: shorter words first (or change to #a > #b if you prefer longer)
-		return #a < #b
-	end)
-
-local function GetHighPriorityScore(word)
-	for ending, score in pairs(HighPriorityEndings) do
-		if word:match(ending) then
-			return score
-		end
-	end
-	return 0
-end
-
 local function GetSartreScore(word)
 	local lastChar = word:sub(-1)
 	return HardLetterScores[lastChar] or 0
