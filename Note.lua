@@ -271,13 +271,6 @@ local HardLetterScores = {
 	y = 2, g = 2, p = 2
 }
 
-local HighPriorityEndings = {
-	aan = 10, abau = 10, abbi = 10, abev = 10, abic = 10, abim = 10, abin = 10, abis = 10,
-	abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10,
-	-- ... (you can paste the entire long list here)
-	-- For brevity in this message I'm not repeating all ~1400 entries
-	hl = 10, sz = 10, nk = 10, fs = 10, rg = 10, yf = 10, pf = 10, sb = 10, mg = 10
-}
 local function GetSartreScore(word)
 	local lastChar = word:sub(-1)
 	return HardLetterScores[lastChar] or 0
@@ -1002,8 +995,6 @@ local SortBtn = CreateToggle("Sort: "..sortMode, UDim2.new(0, 15, 0, 33), functi
 	if sortMode == "Random" then sortMode = "Shortest"
 	elseif sortMode == "Shortest" then sortMode = "Longest"
 	elseif sortMode == "Longest" then sortMode = "Sartre"
-	elseif sortMode == "Sartre" then sortMode = "Rbt"
-	elseif sortMode == "Rbt" then sortMode = "Salva"
 	else sortMode = "Random" end
 
 	Config.SortMode = sortMode
