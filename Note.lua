@@ -214,7 +214,7 @@ local function LoadList(fname)
 	if isfile(fname) then
 		local content = readfile(fname)
 		for w in content:gmatch("[^\r\n]+") do
-			local clean = w:gsub("[%s%c]+", "[%s%c]+"):lower()
+			local clean = w:gsub("[%s%c]+", ""):lower()
 			if #clean > 0 and not SeenWords[clean] then
 				SeenWords[clean] = true
 				table.insert(Words, clean)
@@ -242,7 +242,7 @@ end
 
 if Config.CustomWords then
 	for _, w in ipairs(Config.CustomWords) do
-		local clean = w:gsub("[%s%c]+", "[%s%c]+"):lower()
+		local clean = w:gsub("[%s%c]+", ""):lower()
 		if #clean > 0 and not SeenWords[clean] then
 			SeenWords[clean] = true
 			table.insert(Words, clean)
@@ -1226,7 +1226,7 @@ local function RefreshCustomWords()
 	end
 
 	local queryRaw = CWSearchBox.Text
-	local query = (queryRaw == "Search words...") and "" or queryRaw:lower():gsub("[%s%c]+", "[%s%c]+")
+	local query = (queryRaw == "Search words...") and "" or queryRaw:lower():gsub("[%s%c]+", "")
 
 	local list = Config.CustomWords or {}
 	local shownCount = 0
@@ -1595,8 +1595,8 @@ do
 		if sVal == "Starts with..." then sVal = "" end
 		if eVal == "Ends with..." then eVal = "" end
 
-		sVal = sVal:lower():gsub("[%s%c]+","")
-		eVal = eVal:lower():gsub("[%s%c]+","")
+		sVal = sVal:lower():gsub("[%s%c]+", "")
+		eVal = eVal:lower():gsub("[%s%c]+", "")
 
 
 		suffixMode = eVal
@@ -2497,6 +2497,18 @@ MinBtn.MouseButton1Click:Connect(function()
 end)
 
 local lastTypeVisible = true
+local lastSortMode = "Longest"
+local lastSortAscending = true
+local lastBlacklist = ""
+local lastPrefix = ""
+local lastCensored = false
+local lastLengthMode = 0
+local lastIgnorePunctuation = false
+local lastIgnoreSpaces = false
+local lastIgnoreCaps = false
+local lastIgnoreNumbers = false
+local lastIgnoreSpecial = false
+local lastIgnoreEmoji = false
 local lastRequiredLetter = ""
 
 local StatsData = {}
