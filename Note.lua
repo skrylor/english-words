@@ -27,8 +27,8 @@ math.randomseed(os.time())
 local THEME = {
 	Background = Color3.fromRGB(20, 20, 24),
 	ItemBG = Color3.fromRGB(32, 32, 38),
-	Accent = Color3.fromRGB(85, 0, 0),
-	Text = Color3.fromRGB(85, 0, 0),
+	Accent = Color3.fromRGB(114, 100, 255),
+	Text = Color3.fromRGB(240, 240, 240),
 	SubText = Color3.fromRGB(150, 150, 160),
 	Success = Color3.fromRGB(100, 255, 140),
 	Warning = Color3.fromRGB(255, 200, 80),
@@ -124,7 +124,7 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0.4
+local thinkDelayMin = 0.1
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
@@ -153,12 +153,6 @@ local function GetHighPriorityEndingBonus(word)
 	for suffixLen = 4, 2, -1 do
 		if len >= suffixLen then
 			local ending = word:sub(-suffixLen)
-			i	f HighPriorityEndings[ending] then
-				return HighPriorityEndings[ending]   -- returns 10
-			end
-		end
-	end
-
 	return 0
 end
 
