@@ -2331,23 +2331,7 @@ UpdateList = function(detectedText, requiredLetter)
 					return #a < #b
 				end
 				return sA > sB
-		elseif sortMode == "Salva" then
-			table.sort(matches, function(a, b)
-				local sA = GetSalvaScore(a)
-				local sB = GetSalvaScore(b)
-				if sA == sB then
-					return #a < #b
-				end
-				return sA > sB
 			end)
-		elseif sortMode == "Rbt" then
-			table.sort(matches, function(a, b)
-				local sA = GetRbtScore(a)
-				local sB = GetRbtScore(b)
-				if sA == sB then
-					return #a < #b
-				end
-				return sA > sB
 		end
 	end
 
