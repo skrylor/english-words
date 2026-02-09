@@ -2496,19 +2496,7 @@ MinBtn.MouseButton1Click:Connect(function()
 	end
 end)
 
-local lastTypeVisible = true
-local lastSortMode = "Longest"
-local lastSortAscending = true
-local lastBlacklist = ""
-local lastPrefix = ""
-local lastCensored = false
-local lastLengthMode = 0
-local lastIgnorePunctuation = false
-local lastIgnoreSpaces = false
-local lastIgnoreCaps = false
-local lastIgnoreNumbers = false
-local lastIgnoreSpecial = false
-local lastIgnoreEmoji = false
+local lastTypeVisible = false
 local lastRequiredLetter = ""
 
 local StatsData = {}
