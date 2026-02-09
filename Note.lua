@@ -267,8 +267,8 @@ local function shuffleTable(t)
 end
 
 local HardLetterScores = {
-	irai = 10, coog = 10, akis = 10, hyll = 10, trak = 10, ely = 10, ism = 10, abis = 10, abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10, ackt = 10, acte = 10, acur = 10, adas = 10
-
+	ely = 10, z = 9, q = 9, j = 8, v = 6, k = 5, b = 4, f = 3, w = 3,
+	y = 2, g = 2, p = 2
 }
 
 local function GetSartreScore(word)
