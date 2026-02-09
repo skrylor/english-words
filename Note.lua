@@ -168,7 +168,7 @@ LStroke.Thickness = 2
 local LoadingTitle = Instance.new("TextLabel", LoadingFrame)
 LoadingTitle.Size = UDim2.new(1, 0, 0, 40)
 LoadingTitle.BackgroundTransparency = 1
-LoadingTitle.Text = "WordHelper V4"
+LoadingTitle.Text = "WordHelper V5"
 LoadingTitle.TextColor3 = THEME.Accent
 LoadingTitle.Font = Enum.Font.GothamBold
 LoadingTitle.TextSize = 18
@@ -267,15 +267,9 @@ local function shuffleTable(t)
 end
 
 local HardLetterScores = {
-	aan = 10, abau = 10, abbi = 10, abev = 10, abic = 10, abim = 10, abin = 10, abis = 10, abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10, ackt = 10, acte = 10, acur = 10, adas = 10,
-	adau = 10, adax = 10, adir = 10, adoo = 10, adou = 10, adow = 10, adua = 10, aeae = 10, aei = 10, aena = 10, afen = 10, afet = 10, afik = 10, afir = 10, afle = 10, afoo = 10, afta = 10, agd = 10, agdi = 10, agia = 10, agie = 10, ahad = 10, aham = 10, ahar = 10, ahau = 10, ahen = 10, ahl = 10, ahn = 10, ahou = 10, ahre = 10, ahte = 10,
-	ahul = 10, ahus = 10, ahwa = 10, ahy = 10, aib = 10, aidi = 10, aigh = 10, aika = 10, aiko = 10, aiku = 10, aill = 10, aimi = 10, aimo = 10, aina = 10, aino = 10, aise = 10, aite = 10, aiye = 10, ajim = 10, ajon = 10, akhi = 10, akis = 10, akul = 10, akun = 10, alah = 10, alak = 10, alaw = 10, aldu = 10, aleo = 10, alne = 10, aloa = 10, alor = 10,
-	alsh = 10, alup = 10, alx = 10, alz = 10, amaa = 10, amae = 10, amc = 10, amda = 10, amea = 10, amed = 10, amsa = 10, amun = 10, amut = 10, amyd = 10, anai = 10, anaz = 10, anik = 10, anja = 10, anjo = 10, anle = 10, anli = 10, anq = 10, anqu = 10, ansp = 10, anul = 10, anun = 10, anut = 10, anym = 10, aoi = 10, aol = 10, aos = 10, apea = 10, apee = 10, apid = 10, apig = 10, aply = 10, apoo = 10, apou = 10, apur = 10, aras = 10, arfi = 10,
-	arii = 10, arip = 10, arke = 10, arlo = 10, aroc = 10, aron = 10, aroo = 10, aror = 10, arst = 10, artu = 10, aruk = 10, arul = 10, arva = 10, asad = 10, asah = 10, asal = 10, asee = 10, ashs = 10, asie = 10, asle = 10, asme = 10, asmi = 10, asni = 10, asou = 10, asua = 10, atae = 10, atak = 10, atan = 10, atat = 10, ataz = 10, ater = 10, atil = 10, atn = 10, atna = 10, atos = 10, atou = 10, atsa = 10, atum = 10, atun = 10, atwa = 10, auan = 10, auga = 10,
-	aume = 10, aup = 10, aupa = 10, aury = 10, avah = 10, avd = 10, avik = 10, avim = 10, avin = 10, avs = 10, avya = 10, awb = 10, awid = 10, awra = 10, awu = 10, ayd = 10, ayde = 10, ayll = 10, ayn = 10, ayou = 10, ayt = 10, azar = 10, azas = 10, azen = 10, azh = 10, azie = 10, bado = 10, bahn = 10, basy = 10, beil = 10, beke = 10, beye = 10, bied = 10, bies = 10, bj = 10, blia = 10, bocs = 10, boed = 10, bohm = 10, boly = 10, bory = 10, brue = 10, bti = 10, btis = 10, buka = 10, buki = 10, bune = 10, busa = 10, bya = 10, byar = 10, bysm = 10, cafo = 10, caia = 10, caxi = 10, cayo = 10, cce = 10, cces = 10, cch = 10, ccha = 10, cco = 10, ccoy = 10, ceen = 10, cend = 10, ceni = 10, cerf = 10, ceys = 10, cheh = 10, chka = 10, chle = 10, chuh = 10, chyn = 10, cino = 10, ciso = 10,
-	clid = 10, coce = 10, coid = 10, coln = 10, coog = 10, coua = 10, crid = 10, ctet = 10, ctg = 10, cti = 10, ctim = 10, cug = 10, cumo = 10, cumy = 10, dacy = 10, daei = 10, dagh = 10, daki = 10, dapt = 10, dax = 10, ddn = 10, deau = 10, deel = 10, demn = 10, deza = 10, dhen = 10, dher = 10, dids = 10, dieu = 10, dife = 10, digm = 10, diis = 10, diks = 10, diov = 10, diru = 10, dium = 10, djal = 10, djas = 10, dju = 10, dma = 10, dnie = 10, doan = 10, dobo = 10, doed = 10, dral = 10, dret = 10, dria = 10, drim = 10, droy = 10, drue = 10, dts = 10, duba = 10, duda = 10, duja = 10, duki = 10, dulu = 10, dums = 10, durs = 10, dusa = 10, dwig = 10, dyl = 10, dyla = 10, dzu = 10, eace = 10, eane = 10, eare = 10, eber = 10, ecan = 10, echu = 10, ecil = 10, ecit = 10, ecke = 10, ecre = 10, ecro = 10, ecti = 10, ecy = 10, edan = 10, edde = 10, edis = 10, edn = 10, edon = 10, edus = 10, eeb = 10, eem = 10, eero = 10, ees = 10, eet = 10, eete = 10, efe = 10, efi = 10, efte = 10, egle = 10, egro = 10, egua = 10, egue = 10, egut = 10, eha = 10, ehi = 10, ehl = 10, ehu = 10, ehua = 10, eif = 10, eign = 10, eiki = 10, eile = 10, eima = 10, eit = 10, eith = 10, ejo = 10, ekah = 10, ekas = 10, eken = 10, ekh = 10, ekin = 10, eko = 10, elal = 10, elar = 10, elay = 10, elei = 10, elek = 10, elet = 10, elio = 10, elip = 10, elka = 10, elke = 10, eln = 10, elos = 10, elum = 10, elux = 10, emag = 10, emal = 10, emel = 10, emmi = 10, emor = 10,
-	enae = 10, enag = 10, enas = 10, enau = 10, enea = 10, enei = 10, enen = 10, enep = 10, enet = 10, enic = 10, ensy = 10, entt = 10, enuk = 10, eode = 10, eoma = 10, eome = 10, eora = 10, eoty = 10, eou = 10, epae = 10, eped = 10, epl = 10, epn = 10, epol = 10, epoo = 10, epot = 10, eppe = 10, epup = 10, erag = 10, erel = 10, erid = 10, erip = 10, erom = 10, erre = 10, erte = 10, erz = 10, esa = 10, esex = 10, esha = 10, eshi = 10, esla = 10, esli = 10, esma = 10, esod = 10, etan = 10, etia = 10, etwa = 10, euan = 10, euer = 10, euf = 10, eund = 10, eune = 10, eups = 10, ewd = 10, ewel = 10, ewgh = 10, ewin = 10, ewou = 10, exie = 10, eyd = 10, eyde = 10, eygh = 10, eys = 10, eza = 10, eze = 10, ezo = 10, fato = 10, faxi = 10, fazi = 10, fh = 10, fion = 10, fiti = 10, fito = 10, fize = 10, flaj = 10, flod = 10, fock = 10, fok = 10, foon = 10, fory = 10, fude = 10, fuly = 10, gdi = 10, gdin = 10, geng = 10, gesh = 10, ghal = 10, ghed = 10, ghel = 10, ghiz = 10, ghol = 10, ghur = 10, gial = 10, gier = 10, gih = 10, gii = 10, giva = 10, glay = 10, gles = 10, glic = 10, gnes = 10, gni = 10, gnid = 10, goed = 10, goge = 10, gosa = 10, goyo = 10, grel = 10, greu = 10, gth = 10, guba = 10, guda = 10, gudo = 10, gune = 10, gunu = 10, gwan = 10, gyar = 10, habl = 10, habs = 10, haei = 10, hais = 10, harf = 10, hary = 10, hata = 10, haup = 10, hco = 10, heam = 10, heda = 10, heia = 10, heik = 10, hela = 10, helt = 10, hemu = 10, hena = 10, heny = 10, herz = 10, hesh = 10, heti = 10, heum = 10, hewa = 10, heye = 10, hibu = 10, hico = 10, hien = 10, hime = 10, hito = 10, hle = 10, hlid = 10, hlit = 10, hlor = 10, hms = 10, hoae = 10, hoai = 10, hode = 10, hodi = 10, hoel = 10, hooy = 10, hp = 10, hpit = 10, hri = 10, hro = 10, hrot = 10, hte = 10, hube = 10, huil = 10, huna = 10, hute = 10, hyak = 10, hyll = 10, hyz = 10, iach = 10, iag = 10, iama = 10, iape = 10, ibic = 10, ibil = 10, ibol = 10, icas = 10, icen = 10, icha = 10, icil = 10, icot = 10, icta = 10, icti = 10, icto = 10, idei = 10, idet = 10, idia = 10, idom = 10, idor = 10, idry = 10, idu = 10, idum = 10, ier = 10, iern = 10, ifi = 10, ifu = 10, igas = 10, ige = 10, igel = 10, igge = 10, igh = 10, igi = 10, igit = 10, igle = 10, igo = 10, igor = 10, igr = 10, igra = 10, iia = 10, iji = 10, ijol = 10, ikar = 10, ikh = 10, ikr = 10, ilam = 10, ilee = 10, iles = 10, ilim = 10, ilis = 10, ilix = 10
-}	
+	irai = 10, coog = 10, akis = 10, hyll = 10, trak = 10, ely = 10, ism = 10, abis = 10, abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10, ackt = 10, acte = 10, acur = 10, adas = 10
+
+}
 
 local function GetSartreScore(word)
 	local lastChar = word:sub(-1)
@@ -643,7 +637,7 @@ TogglesFrame.Visible = false
 
 local sep = Instance.new("Frame", SettingsFrame)
 sep.Size = UDim2.new(1, 0, 0, 1)
-sep.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+sep.BackgroundColor3 = Color3.fromRGB(35, 0, 0)
 
 local settingsCollapsed = true
 local function UpdateLayout()
@@ -664,7 +658,7 @@ ExpandBtn.Text = "v Show Settings v"
 ExpandBtn.Font = Enum.Font.GothamBold
 ExpandBtn.TextSize = 14
 ExpandBtn.TextColor3 = THEME.Accent
-ExpandBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
+ExpandBtn.BackgroundColor3 = Color3.fromRGB(38, 0, 0)
 ExpandBtn.BackgroundTransparency = 0.5
 ExpandBtn.Size = UDim2.new(1, -10, 0, 30)
 ExpandBtn.Position = UDim2.new(0, 5, 1, -35)
