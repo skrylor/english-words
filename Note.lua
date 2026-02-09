@@ -144,7 +144,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 end)
 
 local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/merged_english.txt"
-local fileName = "ultimate_words_v5.txt"
+local fileName = "ultimate_words_v4.txt"
 
 -- Temporary Loading UI
 local LoadingGui = Instance.new("ScreenGui")
@@ -168,7 +168,7 @@ LStroke.Thickness = 2
 local LoadingTitle = Instance.new("TextLabel", LoadingFrame)
 LoadingTitle.Size = UDim2.new(1, 0, 0, 40)
 LoadingTitle.BackgroundTransparency = 1
-LoadingTitle.Text = "WordHelper V5"
+LoadingTitle.Text = "WordHelper V4"
 LoadingTitle.TextColor3 = THEME.Accent
 LoadingTitle.Font = Enum.Font.GothamBold
 LoadingTitle.TextSize = 18
@@ -267,11 +267,11 @@ local function shuffleTable(t)
 end
 
 local HardLetterScores = {
-	ely = 10, z = 9, q = 9, j = 8, v = 6, k = 5, b = 4, f = 3, w = 3,
+	x = 10, z = 9, q = 9, j = 8, v = 6, k = 5, b = 4, f = 3, w = 3,
 	y = 2, g = 2, p = 2
 }
 
-local function GetSartreScore(word)
+local function GetKillerScore(word)
 	local lastChar = word:sub(-1)
 	return HardLetterScores[lastChar] or 0
 end
@@ -522,7 +522,7 @@ Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "Word<font color=\"rgb(114,100,255)\">Helper</font> V5"
+Title.Text = "Word<font color=\"rgb(114,100,255)\">Helper</font> V4"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
@@ -994,7 +994,7 @@ KeyboardBtn.TextColor3 = showKeyboard and THEME.Success or Color3.fromRGB(255, 1
 local SortBtn = CreateToggle("Sort: "..sortMode, UDim2.new(0, 15, 0, 33), function()
 	if sortMode == "Random" then sortMode = "Shortest"
 	elseif sortMode == "Shortest" then sortMode = "Longest"
-	elseif sortMode == "Longest" then sortMode = "Sartre"
+	elseif sortMode == "Longest" then sortMode = "Killer"
 	else sortMode = "Random" end
 
 	Config.SortMode = sortMode
@@ -2322,10 +2322,10 @@ UpdateList = function(detectedText, requiredLetter)
 			table.sort(matches, function(a, b) return #a > #b end)
 		elseif sortMode == "Shortest" then
 			table.sort(matches, function(a, b) return #a < #b end)
-		elseif sortMode == "Sartre" then
+		elseif sortMode == "Killer" then
 			table.sort(matches, function(a, b)
-				local sA = GetSartreScore(a)
-				local sB = GetSartreScore(b)
+				local sA = GetKillerScore(a)
+				local sB = GetKillerScore(b)
 				if sA == sB then
 					return #a < #b
 				end
