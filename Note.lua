@@ -19,17 +19,17 @@ local request = (syn and syn.request) or (http and http.request) or http_request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 local MIN_CPM = 50
-local MAX_CPM_LEGIT = 1500
-local MAX_CPM_BLATANT = 3000
+local MAX_CPM_LEGIT = 3000
+local MAX_CPM_BLATANT = 6000
 
 math.randomseed(os.time())
 
 local THEME = {
 	Background = Color3.fromRGB(20, 20, 24),
 	ItemBG = Color3.fromRGB(32, 32, 38),
-	Accent = Color3.fromRGB(114, 100, 255),
-	Text = Color3.fromRGB(240, 240, 240),
-	SubText = Color3.fromRGB(150, 150, 160),
+	Accent = Color3.fromRGB(85, 0, 0),
+	Text = Color3.fromRGB(85, 0, 0),
+	SubText = Color3.fromRGB(0, 0, 0),
 	Success = Color3.fromRGB(100, 255, 140),
 	Warning = Color3.fromRGB(255, 200, 80),
 	Slider = Color3.fromRGB(60, 60, 70)
@@ -124,8 +124,28 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0.4
-local thinkDelayMax = 1.2
+local thinkDelayMin = 0.1
+local thinkDelayMax = 3
+local lastThinkDelayUpdate = 0
+local lastListUpdate = 0
+local lastAutoJoinTime = 0
+local lastAutoJoinAttempt = 0
+local lastAutoJoinAttemptTime = 0
+local lastAutoJoinAttemptDelay = 0.5
+local lastAutoJoinAttemptDelayTime = 0
+local lastAutoJoinAttemptDelayMax = 10
+local lastAutoJoinAttemptDelayMin = 0.5
+local lastAutoJoinAttemptDelayFactor = 1.5
+local lastAutoJoinAttemptDelayFactorTime = 0
+local lastAutoJoinAttemptDelayFactorMin = 1.05
+local lastAutoJoinAttemptDelayFactorMax = 2.05
+local lastAutoJoinAttemptDelayFactorUpdateTime = 0
+local lastAutoJoinAttemptDelayFactorUpdateInterval = 0.5
+local lastAutoJoinAttemptDelayFactorUpdateCount = 0
+local lastAutoJoinAttemptDelayFactorUpdateLimit = 10
+local lastAutoJoinAttemptDelayFactorUpdateFactor = 1.05
+local lastAutoJoinAttemptDelayFactorUpdateFactorTime = 0
+local lastAutoJoinAttemptDelayFactorUpdateFactorUpdateTime = 0
 
 local listUpdatePending = false
 local forceUpdateList = false
@@ -153,7 +173,7 @@ local function GetHighPriorityEndingBonus(word)
 	for suffixLen = 4, 2, -1 do
 		if len >= suffixLen then
 			local ending = word:sub(-suffixLen)
-			if HighPriorityEndings[ending] then
+			i	f HighPriorityEndings[ending] then
 				return HighPriorityEndings[ending]   -- returns 10
 			end
 		end
