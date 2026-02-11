@@ -19,8 +19,8 @@ local request = (syn and syn.request) or (http and http.request) or http_request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 local MIN_CPM = 50
-local MAX_CPM_LEGIT = 3000
-local MAX_CPM_BLATANT = 6000
+local MAX_CPM_LEGIT = 1500
+local MAX_CPM_BLATANT = 3000
 
 math.randomseed(os.time())
 
@@ -124,7 +124,7 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0.1
+local thinkDelayMin = 0.4
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
@@ -132,60 +132,6 @@ local forceUpdateList = false
 local lastInputTime = 0
 local LIST_DEBOUNCE = 0.05
 local currentBestMatch = nil
-
--- ┌──────────────────────────────────────────────────────────────┐
--- │  High-priority endings list (all get the same score = 10)    │
--- └──────────────────────────────────────────────────────────────┘
-local HighPriorityEndings = {
-	aan = 10, abau = 10, abbi = 10, abev = 10, abic = 10, abim = 10, abin = 10, abis = 10,
-	abob = 10, aboc = 10, aboo = 10, abot = 10, abub = 10, abug = 10, acae = 10, achm = 10,
-	-- ... (you can paste the entire long list here)
-	-- For brevity in this message I'm not repeating all ~1400 entries
-	hl = 10, sz = 10, nk = 10, fs = 10, rg = 10, yf = 10, pf = 10, sb = 10, mg = 10
-}
-
--- Helper: check if word ends with any high-priority suffix
-local function GetHighPriorityEndingBonus(word)
-	local len = #word
-	if len < 2 then return 0 end
-
-	-- Check 4-letter, 3-letter, 2-letter endings in that order (longer = usually stronger)
-	for suffixLen = 4, 2, -1 do
-		if len >= suffixLen then
-			local ending = word:sub(-suffixLen)
-	return 0
-end
-
-elseif sortMode == "Sartre" then
-	table.sort(matches, function(a, b)
-		-- Primary: high-priority ending bonus (10 vs 0)
-		local bonusA = GetHighPriorityEndingBonus(a)
-		local bonusB = GetHighPriorityEndingBonus(b)
-
-		if bonusA ~= bonusB then
-			return bonusA > bonusB   -- words with bonus=10 come first
-		end
-
-		-- Secondary: existing Sartre score (hard last letter)
-		local sa = GetSartreScore(a)
-		local sb = GetSartreScore(b)
-		if sa ~= sb then
-			return sa > sb
-		end
-
-		-- Tertiary: shorter words first (or change to #a > #b if you prefer longer)
-		return #a < #b
-	end)
-
-	local HighPrioritySet = {}
-	for k,_ in pairs(HighPriorityEndings) do
-		HighPrioritySet[k] = true
-	end
-
-	-- Then in function:
-	if HighPrioritySet[word:sub(-4)] or HighPrioritySet[word:sub(-3)] or HighPrioritySet[word:sub(-2)] then
-		return 10
-	end
 
 if logConn then logConn:Disconnect() end
 logConn = LogService.MessageOut:Connect(function(message, type)
@@ -320,14 +266,55 @@ local function shuffleTable(t)
 	return t
 end
 
+local PriorityEndings = {
+	aan  = 1000,
+	abau = 1000,
+	abbi = 1000,
+	abev = 1000,
+	abic = 1000,
+	hl   = 1000,
+	sz   = 1000,
+	nk   = 1000,
+	fs   = 1000,
+	rg   = 1000,
+	yf   = 1000,
+	pf   = 1000,
+	sb   = 1000,
+	mg   = 1000,
+}
+
+-- Optional: also keep single-letter hard endings as fallback/secondary score
 local HardLetterScores = {
-	ely = 10, z = 9, q = 9, j = 8, v = 6, k = 5, b = 4, f = 3, w = 3,
-	y = 2, g = 2, p = 2
+	x = 15, z = 14, q = 14, j = 13,
+	v = 10, k =  9,
+	b =  8, f =  7, w =  7,
+	y =  6, g =  6, p =  6,
 }
 
 local function GetSartreScore(word)
 	local lastChar = word:sub(-1)
 	return HardLetterScores[lastChar] or 0
+end
+local function GetEndingPriority(word)
+	if not word or #word < 2 then
+		return 0
+	end
+
+	local len = #word
+
+	-- Check longest endings first (4 letters > 3 > 2)
+	for slen = 4, 2, -1 do
+		if len >= slen then
+			local ending = word:sub(-slen):lower()
+			if PriorityEndings[ending] then
+				return PriorityEndings[ending]   -- e.g. 1000
+			end
+		end
+	end
+
+	-- Fallback: single hard letter
+	local last = word:sub(-1):lower()
+	return HardLetterScores[last] or 0
 end
 
 local function getDistance(s1, s2)
@@ -691,7 +678,7 @@ TogglesFrame.Visible = false
 
 local sep = Instance.new("Frame", SettingsFrame)
 sep.Size = UDim2.new(1, 0, 0, 1)
-sep.BackgroundColor3 = Color3.fromRGB(35, 0, 0)
+sep.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
 
 local settingsCollapsed = true
 local function UpdateLayout()
@@ -712,7 +699,7 @@ ExpandBtn.Text = "v Show Settings v"
 ExpandBtn.Font = Enum.Font.GothamBold
 ExpandBtn.TextSize = 14
 ExpandBtn.TextColor3 = THEME.Accent
-ExpandBtn.BackgroundColor3 = Color3.fromRGB(38, 0, 0)
+ExpandBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 45)
 ExpandBtn.BackgroundTransparency = 0.5
 ExpandBtn.Size = UDim2.new(1, -10, 0, 30)
 ExpandBtn.Position = UDim2.new(0, 5, 1, -35)
@@ -2869,4 +2856,3 @@ inputConn = UserInputService.InputBegan:Connect(function(input)
 	if unloaded then return end
 	if input.KeyCode == TOGGLE_KEY then ScreenGui.Enabled = not ScreenGui.Enabled end
 end)
-
