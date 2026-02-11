@@ -214,7 +214,7 @@ local function LoadList(fname)
 	if isfile(fname) then
 		local content = readfile(fname)
 		for w in content:gmatch("[^\r\n]+") do
-			local clean = w:gsub("[%s%c]+", "[^\r\n]+"):lower()
+			local clean = w:gsub("[%s%c]+", ""):lower()
 			if #clean > 0 and not SeenWords[clean] then
 				SeenWords[clean] = true
 				table.insert(Words, clean)
@@ -242,7 +242,7 @@ end
 
 if Config.CustomWords then
 	for _, w in ipairs(Config.CustomWords) do
-		local clean = w:gsub("[%s%c]+", "[^\r\n]+"):lower()
+		local clean = w:gsub("[%s%c]+", ""):lower()
 		if #clean > 0 and not SeenWords[clean] then
 			SeenWords[clean] = true
 			table.insert(Words, clean)
@@ -1267,7 +1267,7 @@ local function RefreshCustomWords()
 	end
 
 	local queryRaw = CWSearchBox.Text
-	local query = (queryRaw == "Search words...") and "" or queryRaw:lower():gsub("[%s%c]+", "[^\r\n]+")
+	local query = (queryRaw == "Search words...") and "" or queryRaw:lower():gsub("[%s%c]+", "")
 
 	local list = Config.CustomWords or {}
 	local shownCount = 0
@@ -1330,7 +1330,7 @@ CWAddBtn.MouseButton1Click:Connect(function()
 	local text = CWAddBox.Text
 	if text == "Add new word..." then return end
 
-	text = text:gsub("[%s%c]+", "[^\r\n]+"):lower()
+	text = text:gsub("[%s%c]+", ""):lower()
 	if #text < 2 then return end
 
 	if not Config.CustomWords then Config.CustomWords = {} end
