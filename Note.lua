@@ -1643,11 +1643,11 @@ do
 		local eVal = WBEndBox.Text
 		local lVal = tonumber(WBLengthBox.Text)
 
-		if sVal == "Starts with..." then sVal = "" end
-		if eVal == "Ends with..." then eVal = "" end
+		if sVal == "Starts with..." then sVal = "[^\r\n]+" end
+		if eVal == "Ends with..." then eVal = "[^\r\n]+" end
 
-		sVal = sVal:lower():gsub("", "")
-		eVal = eVal:lower():gsub("", "")
+		sVal = sVal:lower():gsub("[%s%c]+", "[^\r\n]+")
+		eVal = eVal:lower():gsub("[%s%c]+", "[^\r\n]+")
 
 		suffixMode = eVal
 		Config.SuffixMode = eVal
