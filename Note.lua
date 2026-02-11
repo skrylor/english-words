@@ -1646,8 +1646,8 @@ do
 		if sVal == "Starts with..." then sVal = "" end
 		if eVal == "Ends with..." then eVal = "" end
 
-		sVal = sVal:lower():gsub("[%s%c]+", "")
-		eVal = eVal:lower():gsub("[%s%c]+", "")
+		sVal = sVal:lower():gsub("", "")
+		eVal = eVal:lower():gsub("", "")
 
 		suffixMode = eVal
 		Config.SuffixMode = eVal
