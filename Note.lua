@@ -2268,7 +2268,7 @@ UpdateList = function(detectedText, requiredLetter)
 	local manualSearch = false
 
 	if SearchBox and SearchBox.Text ~= "" then
-		searchPrefix = SearchBox.Text:lower():gsub("[%s%c]+", "[^\r\n]+")
+		searchPrefix = SearchBox.Text:lower():gsub("[%s%c]+", "")
 		manualSearch = true
 		if requiredLetter and searchPrefix:sub(1,1) ~= requiredLetter:sub(1,1):lower() then
 			requiredLetter = nil
