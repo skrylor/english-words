@@ -1639,14 +1639,12 @@ do
 		sVal = sVal:lower():gsub("[%s%c]+", "")
 		eVal = eVal:lower():gsub("[%s%c]+", "")
 
-
 		suffixMode = eVal
 		Config.SuffixMode = eVal
-
 		lengthMode = lVal or 0
 		Config.LengthMode = lengthMode
 
-		-- Trigger main list update
+		-- Trigger main list update (good to keep)
 		if UpdateList then
 			UpdateList(lastDetected, lastRequiredLetter)
 		end
@@ -1664,19 +1662,56 @@ do
 			end
 		end
 
-		for _, w in ipairs(bucket) do
-			local matchStart = (sVal == "") or (w:sub(1, #sVal) == sVal)
-			-- We can use the global vars now or local, doesn't matter much for this loop
-			local matchEnd = (eVal == "") or (w:sub(-#eVal) == eVal)
-			local matchLen = (not lVal) or (#w == lVal)
+		-- ──────────────────────────────────────────────────────────────
+		-- Phase 1: Try to find words ending exactly with the desired suffix
+		-- ──────────────────────────────────────────────────────────────
+		local exactSuffixMatches = {}
+		if eVal ~= "" then
+			for _, w in ipairs(bucket) do
+				local matchStart = (sVal == "") or (w:sub(1, #sVal) == sVal)
+				local matchEnd   = w:sub(-#eVal) == eVal
+				local matchLen   = (not lVal) or (#w == lVal)
 
-			if matchStart and matchEnd and matchLen then
-				table.insert(results, w)
-				if #results >= limit then break end
+				if matchStart and matchEnd and matchLen then
+					table.insert(exactSuffixMatches, w)
+					if #exactSuffixMatches >= limit then break end
+				end
 			end
 		end
 
-		for i, w in ipairs(results) do
+		-- ──────────────────────────────────────────────────────────────
+		-- Phase 2: Fallback — if no (or very few) exact matches → show prefix matches
+		-- ──────────────────────────────────────────────────────────────
+		local fallbackMatches = {}
+		if #exactSuffixMatches < 5 and sVal ~= "" then   -- only fallback if almost no results
+			for _, w in ipairs(bucket) do
+				local matchStart = w:sub(1, #sVal) == sVal
+				local matchLen   = (not lVal) or (#w == lVal)
+
+				-- We ignore ending here — just prefix + optional length
+				if matchStart and matchLen then
+					table.insert(fallbackMatches, w)
+					if #fallbackMatches >= limit then break end
+				end
+			end
+		end
+
+		-- ──────────────────────────────────────────────────────────────
+		-- Decide what to show
+		-- ──────────────────────────────────────────────────────────────
+		local finalResults = {}
+		if #exactSuffixMatches > 0 then
+			finalResults = exactSuffixMatches
+			-- Optional: sort by length descending
+			table.sort(finalResults, function(a,b) return #a > #b end)
+		else
+			finalResults = fallbackMatches
+			-- Optional: sort by length descending too
+			table.sort(finalResults, function(a,b) return #a > #b end)
+		end
+
+		-- Display
+		for i, w in ipairs(finalResults) do
 			local row = Instance.new("TextButton", WBList)
 			row.Size = UDim2.new(1, -6, 0, 22)
 			row.BackgroundColor3 = (i % 2 == 0) and Color3.fromRGB(25,25,30) or Color3.fromRGB(30,30,35)
@@ -1702,7 +1737,11 @@ do
 			lbl.BackgroundTransparency = 1
 			lbl.TextXAlignment = Enum.TextXAlignment.Left
 
-			-- Removed nested invisible button to fix click handling
+			-- Optional: visual hint when it's fallback results
+			if #exactSuffixMatches == 0 and #finalResults > 0 then
+				lbl.Text = w .. "   (no ely words found — showing prefix matches)"
+				lbl.TextColor3 = Color3.fromRGB(180, 180, 100)  -- yellowish hint
+			end
 		end
 
 		WBList.CanvasSize = UDim2.new(0,0,0, WBLayout.AbsoluteContentSize.Y)
