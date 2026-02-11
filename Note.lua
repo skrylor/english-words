@@ -1565,6 +1565,16 @@ do
 	WBHeader.Size = UDim2.new(1, 0, 0, 40)
 	WBHeader.BackgroundTransparency = 1
 
+	local FallbackLabel = Instance.new("TextLabel", WordBrowserFrame)
+	FallbackLabel.Size = UDim2.new(1, -20, 0, 20)
+	FallbackLabel.Position = UDim2.new(0, 10, 0, 75)
+	FallbackLabel.BackgroundTransparency = 1
+	FallbackLabel.Font = Enum.Font.Gotham
+	FallbackLabel.TextSize = 13
+	FallbackLabel.TextColor3 = Color3.fromRGB(255, 200, 100)
+	FallbackLabel.TextXAlignment = Enum.TextXAlignment.Center
+	FallbackLabel.Visible = false
+
 	local WBClose = Instance.new("TextButton", WordBrowserFrame)
 	WBClose.Text = "X"
 	WBClose.Font = Enum.Font.GothamBold
@@ -1700,6 +1710,12 @@ do
 		-- Decide what to show
 		-- ──────────────────────────────────────────────────────────────
 		local finalResults = {}
+		if #exactSuffixMatches == 0 and #finalResults > 0 then
+			FallbackLabel.Text = "No words ending in '" .. eVal .. "' — showing prefix matches instead"
+			FallbackLabel.Visible = true
+		else
+			FallbackLabel.Visible = false
+		end
 		if #exactSuffixMatches > 0 then
 			finalResults = exactSuffixMatches
 			-- Optional: sort by length descending
