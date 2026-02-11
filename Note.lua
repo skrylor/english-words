@@ -1716,15 +1716,6 @@ do
 		else
 			FallbackLabel.Visible = false
 		end
-		if #exactSuffixMatches > 0 then
-			finalResults = exactSuffixMatches
-			-- Optional: sort by length descending
-			table.sort(finalResults, function(a,b) return #a > #b end)
-		else
-			finalResults = fallbackMatches
-			-- Optional: sort by length descending too
-			table.sort(finalResults, function(a,b) return #a > #b end)
-		end
 
 		-- Display
 		for i, w in ipairs(finalResults) do
