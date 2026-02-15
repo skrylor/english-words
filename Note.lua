@@ -100,7 +100,7 @@ local keyboardLayout = Config.KeyboardLayout or "QWERTY"
 
 local isTyping = false
 local isAutoPlayScheduled = false
-local lastTypingStart = nil
+local lastTypingStart = 0
 local runConn = nil
 local inputConn = nil
 local logConn = nil
@@ -1650,7 +1650,7 @@ do
 		eVal = eVal:lower():gsub("[%s%c]+", "")
 
 		suffixMode = eVal
-		Config.SuffixMode = eVal
+		Config.SuffixMode = suffixMode
 		lengthMode = lVal or 0
 		Config.LengthMode = lengthMode
 
