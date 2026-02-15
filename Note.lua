@@ -143,7 +143,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 	end
 end)
 
-local url = "https://raw.githubusercontent.com/LeviChessMan/Secret/refs/heads/main/Secret.txt?token=GHSAT0AAAAAADTZV6W2U5IHCMU42D7PCAAM2MRYSFA"
+local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/merged_english.txt"
 local fileName = "ultimate_words_v4.txt"
 
 -- Temporary Loading UI
