@@ -19,8 +19,8 @@ local request = (syn and syn.request) or (http and http.request) or http_request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 local MIN_CPM = 50
-local MAX_CPM_LEGIT = 1500
-local MAX_CPM_BLATANT = 3000
+local MAX_CPM_LEGIT = 5000
+local MAX_CPM_BLATANT = 10000
 
 math.randomseed(os.time())
 
@@ -57,12 +57,12 @@ local Config = {
 	},
 	PanicMode = true,
 	ShowKeyboard = false,
-	ErrorRate = 5,
-	ThinkDelay = 0.8,
+	ErrorRate = 0,
+	ThinkDelay = 0,
 	RiskyMistakes = false,
 	CustomWords = {},
 	MinTypeSpeed = 50,
-	MaxTypeSpeed = 3000,
+	MaxTypeSpeed = 10000,
 	KeyboardLayout = "QWERTY"
 }
 
@@ -124,7 +124,7 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0.4
+local thinkDelayMin = 0.05
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
@@ -2902,3 +2902,4 @@ inputConn = UserInputService.InputBegan:Connect(function(input)
 	if unloaded then return end
 	if input.KeyCode == TOGGLE_KEY then ScreenGui.Enabled = not ScreenGui.Enabled end
 end)
+
