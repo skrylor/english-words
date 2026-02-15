@@ -19,8 +19,8 @@ local request = (syn and syn.request) or (http and http.request) or http_request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 local MIN_CPM = 50
-local MAX_CPM_LEGIT = 5000
-local MAX_CPM_BLATANT = 10000
+local MAX_CPM_LEGIT = 50000
+local MAX_CPM_BLATANT = 100000
 
 math.randomseed(os.time())
 
@@ -62,7 +62,7 @@ local Config = {
 	RiskyMistakes = false,
 	CustomWords = {},
 	MinTypeSpeed = 50,
-	MaxTypeSpeed = 10000,
+	MaxTypeSpeed = 100000,
 	KeyboardLayout = "QWERTY"
 }
 
