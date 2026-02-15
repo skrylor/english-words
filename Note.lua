@@ -143,7 +143,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 	end
 end)
 
-local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/merged_english.txt"
+local url = "https://raw.githubusercontent.com/LeviChessMan/Secret/refs/heads/main/Secret.txt?token=GHSAT0AAAAAADTZV6W2U5IHCMU42D7PCAAM2MRYSFA"
 local fileName = "ultimate_words_v4.txt"
 
 -- Temporary Loading UI
@@ -382,50 +382,7 @@ local function GetCurrentGameWord(providedFrame)
 		return a.Id < b.Id
 	end)
 
-	-- Option A - Maximum visual speed + still somewhat "human" looking
-	local function FastType(word)
-		local box = GetGameTextBox()
-		if not box then return end
 
-		box:CaptureFocus()
-		task.wait(0.03)
-
-		-- Option 1: fastest SendTextInput spam (looks very blatant)
-		for i = 1, #word do
-			VirtualInputManager:SendTextInput(word:sub(i,i))
-			-- NO wait here → looks like teleport typing
-		end
-
-		-- Option 2: still fast but slightly less obvious
-    --[[
-    for i = 1, #word do
-        VirtualInputManager:SendTextInput(word:sub(i,i))
-        if i % 4 == 0 then task.wait(0.008) end   -- ~8000-12000 cpm visual speed
-    end
-    --]]
-
-		task.wait(0.035)
-		VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
-		task.wait(0.018)
-		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-	end
-	Lua-- Option B - Try direct TextBox write (works only in some games)
-	local function TryDirectWrite(word)
-		local box = GetGameTextBox()
-		if not box then return end
-
-		local old = box.Text
-
-		-- Many games filter .Text = "" or very fast changes
-		box.Text = word
-		task.wait(0.025)
-		box.Text = word   -- sometimes needs to be set twice
-
-		task.wait(0.04)
-		VirtualInputManager:SendKeyEvent(true , Enum.KeyCode.Return, false, game)
-		task.wait(0.015)
-		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
-	end
 
 	for _, data in ipairs(letterData) do
 		local t = tostring(data.Txt.Text)
