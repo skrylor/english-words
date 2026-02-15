@@ -27,7 +27,7 @@ math.randomseed(os.time())
 local THEME = {
 	Background = Color3.fromRGB(20, 20, 24),
 	ItemBG = Color3.fromRGB(32, 32, 38),
-	Accent = Color3.fromRGB(114, 100, 255),
+	Accent = Color3.fromRGB(85, 0, 0),
 	Text = Color3.fromRGB(240, 240, 240),
 	SubText = Color3.fromRGB(150, 150, 160),
 	Success = Color3.fromRGB(100, 255, 140),
@@ -1768,7 +1768,7 @@ end
 
 local function CalculateDelay()
 	local charsPerMin = currentCPM
-	local baseDelay = 60 / charsPerMin
+	local baseDelay = 600 / charsPerMin
 	local variance = baseDelay * 0.4
 	return useHumanization and (baseDelay + math.random()*variance - (variance/2)) or baseDelay
 end
@@ -1804,11 +1804,11 @@ end
 local lastKey = nil
 local function CalculateDelayForKeys(prevChar, nextChar)
 	if isBlatant then 
-		return 60 / currentCPM 
+		return 600 / currentCPM 
 	end
 
 	local charsPerMin = currentCPM
-	local baseDelay = 60 / charsPerMin
+	local baseDelay = 600 / charsPerMin
 
 	local variance = baseDelay * 0.35
 	local extra = 0
