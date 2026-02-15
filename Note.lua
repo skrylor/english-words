@@ -1649,8 +1649,8 @@ do
 		sVal = sVal:lower():gsub("[%s%c]+", "")
 		eVal = eVal:lower():gsub("[%s%c]+", "")
 
-		suffixMode = eVal
-		Config.SuffixMode = suffixMode
+		suffixMode = suffixMode
+		Config.SuffixMode = eVal
 		lengthMode = lVal or 0
 		Config.LengthMode = lengthMode
 
