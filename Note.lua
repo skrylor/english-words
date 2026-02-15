@@ -15,6 +15,7 @@ local TweenService = cloneref(game:GetService("TweenService"))
 local LogService = cloneref(game:GetService("LogService"))
 local GuiService = cloneref(game:GetService("GuiService"))
 
+
 local request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
@@ -231,6 +232,37 @@ LoadList(fileName)
 
 if LoadingGui then LoadingGui:Destroy() end
 
+-- Run this once after loading Words (e.g. after LoadList / Buckets are ready)
+local SUFFIX_DEPTH = 4   -- try 3 or 5 depending on your list size
+local SuffixIndex = {}
+
+for _, word in ipairs(Words) do
+	local len = #word
+	if len >= SUFFIX_DEPTH then
+		local suf = word:sub(-SUFFIX_DEPTH):lower()
+		SuffixIndex[suf] = SuffixIndex[suf] or {}
+		table.insert(SuffixIndex[suf], word)
+	end
+	-- Optional: also index shorter suffixes if you want
+	if len >= 3 then
+		local suf3 = word:sub(-3)
+		SuffixIndex[suf3] = SuffixIndex[suf3] or {}
+		table.insert(SuffixIndex[suf3], word)
+	end
+	if len >= 2 then
+		local suf2 = word:sub(-2)
+		SuffixIndex[suf2] = SuffixIndex[suf2] or {}
+		table.insert(SuffixIndex[suf2], word)
+	end
+end
+
+-- Optional: sort each suffix group (e.g. longest first)
+for suf, lst in pairs(SuffixIndex) do
+	table.sort(lst, function(a,b) return #a > #b end)   -- or use your SartreScore, etc.
+end
+
+print("Built suffix index with", #SuffixIndex, "entries")
+
 table.sort(Words)
 Buckets = {}
 for _, w in ipairs(Words) do
@@ -280,9 +312,10 @@ local PriorityEndings = {
 	yf   = 1000,
 	pf   = 1000,
 	sb   = 1000,
-	mg   = 1000,
+	mg   = 1000
 }
 
+SuffixIndex = {ely = 1000, aan = 1000, abbi = 1000, abau = 1000, abev = 1000, abic = 1000, hl = 1000, sz = 1000, nk = 1000, fs = 1000, rg = 1000, yf = 1000, pf = 1000, sb = 1000, mg = 1000}   -- suffix → {word1, word2, ...}   sorted by length or priority
 -- Optional: also keep single-letter hard endings as fallback/secondary score
 local HardLetterScores = {
 	x = 15, z = 14, q = 14, j = 13,
@@ -1649,7 +1682,7 @@ do
 		sVal = sVal:lower():gsub("[%s%c]+", "")
 		eVal = eVal:lower():gsub("[%s%c]+", "")
 
-		suffixMode = suffixMode
+		suffixMode = eVal
 		Config.SuffixMode = eVal
 		lengthMode = lVal or 0
 		Config.LengthMode = lengthMode
