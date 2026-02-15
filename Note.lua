@@ -87,7 +87,7 @@ local isBlatant = Config.Blatant
 local useHumanization = Config.Humanize
 local useFingerModel = Config.FingerModel
 local sortMode = Config.SortMode
-local suffixMode = Config.SuffixMode or ""
+local suffixMode = Config.SuffixMode or "ely, irai, abug, lons, ils, coog, akis"
 local lengthMode = Config.LengthMode or 0
 local autoPlay = Config.AutoPlay
 local autoJoin = Config.AutoJoin
@@ -100,7 +100,7 @@ local keyboardLayout = Config.KeyboardLayout or "QWERTY"
 
 local isTyping = false
 local isAutoPlayScheduled = false
-local lastTypingStart = 0
+local lastTypingStart = nil
 local runConn = nil
 local inputConn = nil
 local logConn = nil
@@ -130,7 +130,7 @@ local thinkDelayMax = 1.2
 local listUpdatePending = false
 local forceUpdateList = false
 local lastInputTime = 0
-local LIST_DEBOUNCE = 0.05
+local LIST_DEBOUNCE = 0
 local currentBestMatch = nil
 
 if logConn then logConn:Disconnect() end
