@@ -382,8 +382,6 @@ local function GetCurrentGameWord(providedFrame)
 		return a.Id < b.Id
 	end)
 
-
-
 	for _, data in ipairs(letterData) do
 		local t = tostring(data.Txt.Text)
 		if t:find("#") or t:find("%*") then censored = true end
