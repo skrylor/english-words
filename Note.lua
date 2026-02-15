@@ -59,7 +59,7 @@ local Config = {
 	PanicMode = true,
 	ShowKeyboard = false,
 	ErrorRate = 0,
-	ThinkDelay = 0,
+	ThinkDelay = -5,
 	RiskyMistakes = false,
 	CustomWords = {},
 	MinTypeSpeed = 50,
@@ -125,7 +125,7 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0
+local thinkDelayMin = -5
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
