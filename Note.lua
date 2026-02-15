@@ -27,7 +27,7 @@ math.randomseed(os.time())
 local THEME = {
 	Background = Color3.fromRGB(20, 20, 24),
 	ItemBG = Color3.fromRGB(32, 32, 38),
-	Accent = Color3.fromRGB(85, 0, 0),
+	Accent = Color3.fromRGB(170, 0, 0),
 	Text = Color3.fromRGB(240, 240, 240),
 	SubText = Color3.fromRGB(150, 150, 160),
 	Success = Color3.fromRGB(100, 255, 140),
@@ -46,7 +46,7 @@ local Config = {
 	Humanize = true,
 	FingerModel = true,
 	SortMode = "Random",
-	SuffixMode = "",
+	SuffixMode = "ely, irai, abug, lons, ils, coog, akis",
 	LengthMode = 0,
 	AutoPlay = false,
 	AutoJoin = false,
