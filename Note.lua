@@ -117,6 +117,13 @@ local lastDetected = "---"
 local lastLogicUpdate = 0
 local lastAutoJoinCheck = 0
 local lastWordCheck = 0
+local lastSuffixCheck = 0
+local lastLengthCheck = 0
+local lastCustomCheck = 0
+local lastBlacklistCheck = 0
+local lastUsedWordsCheck = 0
+local lastSortCheck = 0
+local lastPriorityCheck = 0
 local cachedDetected = ""
 local cachedCensored = false
 local LOGIC_RATE = 0.1
@@ -125,7 +132,7 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = -5
+local thinkDelayMin = 0
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
