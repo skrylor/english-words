@@ -135,7 +135,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 		turnExpiryTime = tick() + tonumber(timePart)
 	end
 end)
-local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/merged_english.txt"
+local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/failsafe.txt"
 local fileName = "ultimate_words_v4.txt"
 -- Temporary Loading UI
 local LoadingGui = Instance.new("ScreenGui")
@@ -549,7 +549,7 @@ Header.Size = UDim2.new(1, 0, 0, 45)
 Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "Help<font color=\"rgb(196,40,28)\">Sartre</font> V6"
+Title.Text = "<font color=\"rgb(196,40,28)\">Lilith</font> and <font color=\"rgb(239, 184, 56)\">Sartre</font> V6"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
@@ -2615,3 +2615,4 @@ inputConn = UserInputService.InputBegan:Connect(function(input)
 	if unloaded then return end
 	if input.KeyCode == TOGGLE_KEY then ScreenGui.Enabled = not ScreenGui.Enabled end
 end)
+
