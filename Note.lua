@@ -135,7 +135,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 		turnExpiryTime = tick() + tonumber(timePart)
 	end
 end)
-local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/failsafe.txt"
+local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/Weirdfile.txt"
 local fileName = "ultimate_words_v4.txt"
 -- Temporary Loading UI
 local LoadingGui = Instance.new("ScreenGui")
@@ -775,7 +775,7 @@ local function CreateDropdown(parent, text, options, default, callback)
 	local mainBtn = Instance.new("TextButton", container)
 	mainBtn.Size = UDim2.new(1, 0, 1, 0)
 	mainBtn.BackgroundTransparency = 1
-	mainBtn.Text = text .. ": " .. default
+	mainBtn.Text = text  ": " .. default
 	mainBtn.Font = Enum.Font.GothamMedium
 	mainBtn.TextSize = 11
 	mainBtn.TextColor3 = THEME.Accent
@@ -1305,7 +1305,7 @@ SBRefresh.Size = UDim2.new(0.5, -15, 0, 30)
 SBRefresh.Position = UDim2.new(0.5, 5, 1, -40)
 Instance.new("UICorner", SBRefresh).CornerRadius = UDim.new(0, 6)
 local function FetchServers()
-	SBRefresh.Text = ""
+	SBRefresh.Text = "..."
 	for _, c in ipairs(SBList:GetChildren()) do
 		if c:IsA("Frame") then c:Destroy() end
 	end
@@ -2615,4 +2615,3 @@ inputConn = UserInputService.InputBegan:Connect(function(input)
 	if unloaded then return end
 	if input.KeyCode == TOGGLE_KEY then ScreenGui.Enabled = not ScreenGui.Enabled end
 end)
-
