@@ -346,37 +346,65 @@ local function GetCurrentGameWord(providedFrame)
 		local inGame = gui and gui:FindFirstChild("InGame")
 		frame = inGame and inGame:FindFirstChild("Frame")
 	end
+
 	local container = frame and frame:FindFirstChild("CurrentWord")
 	if not container then return "", false end
+
 	local detected = ""
 	local censored = false
 	local letterData = {}
-	local descendants = container:GetDescendants()
-	for _, desc in ipairs(descendants) do
-		if desc.Name == "Letter" and desc:IsA("TextLabel") and desc.TextTransparency < 1 and desc.Visible then
-			local parentFrame = desc.Parent
+
+	-- Collect ALL Letter labels that are visible and not transparent
+	for _, obj in ipairs(container:GetDescendants()) do
+		if obj.Name == "Letter" 
+			and obj:IsA("TextLabel") 
+			and obj.Visible 
+			and obj.TextTransparency < 0.9     -- usually <1 but sometimes 0.5 etc
+			and obj.Text ~= "" then
+
+			-- Get the closest parent frame that has position (usually the letter container)
+			local parentFrame = obj.Parent
+			while parentFrame and not parentFrame:IsA("GuiObject") do
+				parentFrame = parentFrame.Parent
+			end
+
 			if parentFrame and parentFrame:IsA("GuiObject") and parentFrame.Visible then
 				table.insert(letterData, {
 					Obj = parentFrame,
-					Txt = desc,
-					X = parentFrame.AbsolutePosition.X,
+					Txt = obj,
+					X = parentFrame.AbsolutePosition.X + (parentFrame.AbsoluteSize.X / 2), -- center helps sorting
 					Id = tonumber(parentFrame.Name) or 0
 				})
 			end
 		end
 	end
-	table.sort(letterData, function(a,b)
-		if math.abs(a.X - b.X) > 2 then
+
+	-- Sort by X position (left → right) — fallback to Name if positions are identical
+	table.sort(letterData, function(a, b)
+		if math.abs(a.X - b.X) > 3 then
 			return a.X < b.X
 		end
 		return a.Id < b.Id
 	end)
+
+	-- Build the word
 	for _, data in ipairs(letterData) do
-		local t = tostring(data.Txt.Text)
-		if t:find("#") or t:find("%*") then censored = true end
+		local t = tostring(data.Txt.Text or "")
+		if t == "" then t = " " end   -- rare safety
+
+		if t:find("[#*？]") or t == "_" or t == "?" then 
+			censored = true 
+		end
+
 		detected = detected .. t
 	end
-	return detected:lower():gsub(" ", ""), censored
+
+	detected = detected:lower():gsub("%s+", "")
+
+	-- Debug print (remove later if you want)
+	-- print("Detected word:", detected, "censored:", censored, "#letters:", #letterData)
+
+	return detected, censored
 end
 local function GetTurnInfo(providedFrame)
 	if isMyTurnLogDetected then
