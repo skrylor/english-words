@@ -1277,7 +1277,7 @@ SBRefresh.Size = UDim2.new(0.5, -15, 0, 30)
 SBRefresh.Position = UDim2.new(0.5, 5, 1, -40)
 Instance.new("UICorner", SBRefresh).CornerRadius = UDim.new(0, 6)
 local function FetchServers()
-	SBRefresh.Text = "..."
+	SBRefresh.Text = ""
 	for _, c in ipairs(SBList:GetChildren()) do
 		if c:IsA("Frame") then c:Destroy() end
 	end
