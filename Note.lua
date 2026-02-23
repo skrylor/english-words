@@ -157,7 +157,7 @@ LStroke.Thickness = 2
 local LoadingTitle = Instance.new("TextLabel", LoadingFrame)
 LoadingTitle.Size = UDim2.new(1, 0, 0, 40)
 LoadingTitle.BackgroundTransparency = 1
-LoadingTitle.Text = "WordHelper V5"
+LoadingTitle.Text = "WordHelper V6"
 LoadingTitle.TextColor3 = THEME.Accent
 LoadingTitle.Font = Enum.Font.GothamBold
 LoadingTitle.TextSize = 18
@@ -521,7 +521,7 @@ Header.Size = UDim2.new(1, 0, 0, 45)
 Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "Help<font color=\"rgb(196,40,28)\">Sartre</font> V5"
+Title.Text = "Help<font color=\"rgb(196,40,28)\">Sartre</font> V6"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
