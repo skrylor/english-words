@@ -775,7 +775,7 @@ local function CreateDropdown(parent, text, options, default, callback)
 	local mainBtn = Instance.new("TextButton", container)
 	mainBtn.Size = UDim2.new(1, 0, 1, 0)
 	mainBtn.BackgroundTransparency = 1
-	mainBtn.Text = text  ": " .. default
+	mainBtn.Text = text .. ": " .. default
 	mainBtn.Font = Enum.Font.GothamMedium
 	mainBtn.TextSize = 11
 	mainBtn.TextColor3 = THEME.Accent
