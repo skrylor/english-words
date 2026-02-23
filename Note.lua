@@ -165,7 +165,7 @@ local LoadingStatus = Instance.new("TextLabel", LoadingFrame)
 LoadingStatus.Size = UDim2.new(1, -20, 0, 30)
 LoadingStatus.Position = UDim2.new(0, 10, 0, 50)
 LoadingStatus.BackgroundTransparency = 1
-LoadingStatus.Text = "Initializing..."
+LoadingStatus.Text = "Initializing"
 LoadingStatus.TextColor3 = THEME.Text
 LoadingStatus.Font = Enum.Font.Gotham
 LoadingStatus.TextSize = 14
@@ -176,7 +176,7 @@ local function UpdateStatus(text, color)
 end
 -- Startup: Always fetch fresh word list
 local function FetchWords()
-	UpdateStatus("Fetching latest word list...", THEME.Warning)
+	UpdateStatus("Fetching latest word list", THEME.Warning)
 	local success, res = pcall(function()
 		return request({Url = url, Method = "GET"})
 	end)
@@ -192,7 +192,7 @@ FetchWords()
 local Words = {}
 local SeenWords = {}
 local function LoadList(fname)
-	UpdateStatus("Parsing word list...", THEME.Warning)
+	UpdateStatus("Parsing word list", THEME.Warning)
 	if isfile(fname) then
 		local content = readfile(fname)
 		for w in content:gmatch("[^\r\n]+") do
@@ -284,7 +284,7 @@ local PriorityEndings = {
 	sb = 1000,
 	mg = 1000
 }
-SuffixIndex = {ely = 1000, aan = 1000, abbi = 1000, abau = 1000, abev = 1000, abic = 1000, hl = 1000, sz = 1000, nk = 1000, fs = 1000, rg = 1000, yf = 1000, pf = 1000, sb = 1000, mg = 1000} -- suffix → {word1, word2, ...} sorted by length or priority
+SuffixIndex = {ely = 1000, aan = 1000, abbi = 1000, abau = 1000, abev = 1000, abic = 1000, hl = 1000, sz = 1000, nk = 1000, fs = 1000, rg = 1000, yf = 1000, pf = 1000, sb = 1000, mg = 1000} -- suffix → {word1, word2, } sorted by length or priority
 -- Optional: also keep single-letter hard endings as fallback/secondary score
 local HardLetterScores = {
 	x = 15, z = 14, q = 14, j = 13,
@@ -565,7 +565,7 @@ StatusDot.Position = UDim2.new(0, 0, 0.5, -4)
 StatusDot.BackgroundColor3 = THEME.SubText
 Instance.new("UICorner", StatusDot).CornerRadius = UDim.new(1, 0)
 local StatusText = Instance.new("TextLabel", StatusFrame)
-StatusText.Text = "Idle..."
+StatusText.Text = "Idle"
 StatusText.RichText = true
 StatusText.Font = Enum.Font.Gotham
 StatusText.TextSize = 12
@@ -586,7 +586,7 @@ SearchBox.BackgroundTransparency = 1
 SearchBox.Font = Enum.Font.Gotham
 SearchBox.TextSize = 14
 SearchBox.TextColor3 = THEME.Text
-SearchBox.PlaceholderText = "Search words..."
+SearchBox.PlaceholderText = "Search words"
 SearchBox.PlaceholderColor3 = THEME.SubText
 SearchBox.Text = ""
 SearchBox.TextXAlignment = Enum.TextXAlignment.Left
@@ -1102,7 +1102,7 @@ CWSearchBox.BackgroundColor3 = THEME.ItemBG
 CWSearchBox.Size = UDim2.new(1, -20, 0, 24)
 CWSearchBox.Position = UDim2.new(0, 10, 0, 35)
 Instance.new("UICorner", CWSearchBox).CornerRadius = UDim.new(0, 4)
-SetupPhantomBox(CWSearchBox, "Search words...")
+SetupPhantomBox(CWSearchBox, "Search words")
 local CWScroll = Instance.new("ScrollingFrame", CustomWordsFrame)
 CWScroll.Size = UDim2.new(1, -10, 1, -110)
 CWScroll.Position = UDim2.new(0, 5, 0, 65)
@@ -1120,7 +1120,7 @@ CWAddBox.BackgroundColor3 = THEME.ItemBG
 CWAddBox.Size = UDim2.new(0, 170, 0, 24)
 CWAddBox.Position = UDim2.new(0, 10, 1, -35)
 Instance.new("UICorner", CWAddBox).CornerRadius = UDim.new(0, 4)
-SetupPhantomBox(CWAddBox, "Add new word...")
+SetupPhantomBox(CWAddBox, "Add new word")
 local CWAddBtn = Instance.new("TextButton", CustomWordsFrame)
 CWAddBtn.Text = "Add"
 CWAddBtn.Font = Enum.Font.GothamBold
@@ -1135,7 +1135,7 @@ local function RefreshCustomWords()
 		if c:IsA("Frame") then c:Destroy() end
 	end
 	local queryRaw = CWSearchBox.Text
-	local query = (queryRaw == "Search words...") and "" or queryRaw:lower():gsub("[%s%c]+", "")
+	local query = (queryRaw == "Search words") and "" or queryRaw:lower():gsub("[%s%c]+", "")
 	local list = Config.CustomWords or {}
 	local shownCount = 0
 	for i, w in ipairs(list) do
@@ -1187,7 +1187,7 @@ end
 CWSearchBox:GetPropertyChangedSignal("Text"):Connect(RefreshCustomWords)
 CWAddBtn.MouseButton1Click:Connect(function()
 	local text = CWAddBox.Text
-	if text == "Add new word..." then return end
+	if text == "Add new word" then return end
 	text = text:gsub("[%s%c]+", ""):lower()
 	if #text < 2 then return end
 	if not Config.CustomWords then Config.CustomWords = {} end
@@ -1322,8 +1322,8 @@ local function FetchServers()
 						join.TextColor3 = Color3.fromRGB(255,255,255)
 						Instance.new("UICorner", join).CornerRadius = UDim.new(0, 4)
 						join.MouseButton1Click:Connect(function()
-							join.Text = "Joining..."
-							ShowToast("Teleporting...", "success")
+							join.Text = "Joining"
+							ShowToast("Teleporting", "success")
 							if queue_on_teleport then
 								queue_on_teleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/skrylor/Last-Letter-Script/refs/heads/main/Last%20Letter.lua"))()')
 							end
@@ -1413,7 +1413,7 @@ do
 	WBStartBox.Size = UDim2.new(0.4, 0, 0, 24)
 	WBStartBox.Position = UDim2.new(0, 10, 0, 45)
 	Instance.new("UICorner", WBStartBox).CornerRadius = UDim.new(0, 4)
-	SetupPhantomBox(WBStartBox, "Starts with...")
+	SetupPhantomBox(WBStartBox, "Starts with")
 	local WBEndBox = Instance.new("TextBox", WordBrowserFrame)
 	WBEndBox.Font = Enum.Font.Gotham
 	WBEndBox.TextSize = 12
@@ -1421,7 +1421,7 @@ do
 	WBEndBox.Size = UDim2.new(0.4, 0, 0, 24)
 	WBEndBox.Position = UDim2.new(0.45, 0, 0, 45)
 	Instance.new("UICorner", WBEndBox).CornerRadius = UDim.new(0, 4)
-	SetupPhantomBox(WBEndBox, "Ends with...")
+	SetupPhantomBox(WBEndBox, "Ends with")
 	local WBLengthBox = Instance.new("TextBox", WordBrowserFrame)
 	WBLengthBox.Font = Enum.Font.Gotham
 	WBLengthBox.TextSize = 12
@@ -1429,7 +1429,7 @@ do
 	WBLengthBox.Size = UDim2.new(0.2, 0, 0, 24)
 	WBLengthBox.Position = UDim2.new(0.02, 0, 0, 80)
 	Instance.new("UICorner", WBLengthBox).CornerRadius = UDim.new(0, 4)
-	SetupPhantomBox(WBLengthBox, "Len...")
+	SetupPhantomBox(WBLengthBox, "Len")
 	local WBSearchBtn = Instance.new("TextButton", WordBrowserFrame)
 	WBSearchBtn.Text = "Go"
 	WBSearchBtn.Font = Enum.Font.GothamBold
@@ -1455,8 +1455,8 @@ do
 		local sVal = WBStartBox.Text
 		local eVal = WBEndBox.Text
 		local lVal = tonumber(WBLengthBox.Text)
-		if sVal == "Starts with..." then sVal = "" end
-		if eVal == "Ends with..." then eVal = "" end
+		if sVal == "Starts with" then sVal = "" end
+		if eVal == "Ends with" then eVal = "" end
 		sVal = sVal:lower():gsub("[%s%c]+", "")
 		eVal = eVal:lower():gsub("[%s%c]+", "")
 		suffixMode = eVal
@@ -1741,7 +1741,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
 		targetBox:CaptureFocus()
 		task.wait(0.1)
 	end
-	StatusText.Text = "Typing..."
+	StatusText.Text = "Typing"
 	StatusText.TextColor3 = THEME.Accent
 	Tween(StatusDot, {BackgroundColor3 = THEME.Accent})
 	local success, err = pcall(function()
@@ -1905,7 +1905,7 @@ local function SmartType(targetWord, currentDetected, isCorrection, bypassTurn)
 			if not accepted then
 				local postCheck = GetGameTextBox()
 				if postCheck and postCheck.Text == targetWord then
-					StatusText.Text = "Enter failed? Retrying..."
+					StatusText.Text = "Enter failed? Retrying"
 					PressEnter()
 					task.wait(0.5)
 					if GetCurrentGameWord() == currentDetected then
@@ -2512,7 +2512,7 @@ runConn = RunService.RenderStepped:Connect(function()
 			lastRequiredLetter = requiredLetter
 
 			if detected == "" and not forceUpdateList then
-				StatusText.Text = "Waiting..."
+				StatusText.Text = "Waiting"
 				StatusText.TextColor3 = THEME.SubText
 				Tween(StatusDot, {BackgroundColor3 = THEME.SubText})
 
