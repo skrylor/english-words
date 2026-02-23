@@ -135,7 +135,7 @@ logConn = LogService.MessageOut:Connect(function(message, type)
 		turnExpiryTime = tick() + tonumber(timePart)
 	end
 end)
-local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/failsafe.txt"
+local url = "https://raw.githubusercontent.com/skrylor/english-words/refs/heads/main/merged_english.txt"
 local fileName = "ultimate_words_v4.txt"
 -- Temporary Loading UI
 local LoadingGui = Instance.new("ScreenGui")
