@@ -603,7 +603,7 @@ Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "<font color=\"rgb(196,40,28)\">Lilith</font> and <font color=\"rgb(239, 184, 56)\">Sartre</font> V6"
+Title.Text = "Help<font color=\"rgb(196,40,28)\">Sartre</font> V5"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
