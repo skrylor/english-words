@@ -1163,17 +1163,6 @@ ServerBrowserBtn.BackgroundColor3 = THEME.Background
 ServerBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 ServerBrowserBtn.Position = UDim2.new(0, 15, 0, 205)
 Instance.new("UICorner", ServerBrowserBtn).CornerRadius = UDim.new(0, 4)
-SBRefresh.MouseButton1Click:Connect(FetchServers)
-
-ServerBrowserBtn.MouseButton1Click:Connect(function()
-	ServerFrame.Visible = not ServerFrame.Visible
-	ServerFrame.Parent = nil
-	ServerFrame.Parent = ScreenGui
-	if ServerFrame.Visible then
-		FetchServers()
-	end
-end)
-
 
 local TableBrowserBtn = Instance.new("TextButton", TogglesFrame)
 TableBrowserBtn.Text = "Table Browser"
