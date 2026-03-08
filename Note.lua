@@ -1174,12 +1174,6 @@ TableBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 TableBrowserBtn.Position = UDim2.new(0, 15, 0, 235)           -- ← adjust this Y value if needed
 Instance.new("UICorner", TableBrowserBtn).CornerRadius = UDim.new(0, 4)
 
-TableBrowserBtn.MouseButton1Click:Connect(function()
-	TableFrame.Visible = not TableFrame.Visible
-	TableFrame.Parent = nil
-	TableFrame.Parent = ScreenGui
-end)
-
 local CustomWordsFrame = Instance.new("Frame", ScreenGui)
 CustomWordsFrame.Name = "CustomWordsFrame"
 CustomWordsFrame.Size = UDim2.new(0, 250, 0, 350)
@@ -1504,7 +1498,7 @@ local function FetchServers()
 						join.TextColor3 = Color3.fromRGB(255,255,255)
 						Instance.new("UICorner", join).CornerRadius = UDim.new(0, 4)
 
-						join.MouseButton1Click:Connect(function()
+						join
 							join.Text = "Joining..."
 							ShowToast("Teleporting...", "success")
 
