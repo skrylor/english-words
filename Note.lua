@@ -1164,16 +1164,6 @@ ServerBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 ServerBrowserBtn.Position = UDim2.new(0, 15, 0, 205)
 Instance.new("UICorner", ServerBrowserBtn).CornerRadius = UDim.new(0, 4)
 
-local TableBrowserBtn = Instance.new("TextButton", TogglesFrame)
-TableBrowserBtn.Text = "Table Browser"
-TableBrowserBtn.Font = Enum.Font.GothamMedium
-TableBrowserBtn.TextSize = 11
-TableBrowserBtn.TextColor3 = Color3.fromRGB(100, 255, 180)   -- light teal
-TableBrowserBtn.BackgroundColor3 = THEME.Background
-TableBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
-TableBrowserBtn.Position = UDim2.new(0, 15, 0, 235)           -- ← adjust this Y value if needed
-Instance.new("UICorner", TableBrowserBtn).CornerRadius = UDim.new(0, 4)
-
 local CustomWordsFrame = Instance.new("Frame", ScreenGui)
 CustomWordsFrame.Name = "CustomWordsFrame"
 CustomWordsFrame.Size = UDim2.new(0, 250, 0, 350)
