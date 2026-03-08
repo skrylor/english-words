@@ -15,20 +15,19 @@ local TweenService = cloneref(game:GetService("TweenService"))
 local LogService = cloneref(game:GetService("LogService"))
 local GuiService = cloneref(game:GetService("GuiService"))
 
-
 local request = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 local TOGGLE_KEY = Enum.KeyCode.RightControl
 local MIN_CPM = 50
-local MAX_CPM_LEGIT = 50000
-local MAX_CPM_BLATANT = 100000
+local MAX_CPM_LEGIT = 1500
+local MAX_CPM_BLATANT = 3000
 
 math.randomseed(os.time())
 
 local THEME = {
 	Background = Color3.fromRGB(20, 20, 24),
 	ItemBG = Color3.fromRGB(32, 32, 38),
-	Accent = Color3.fromRGB(170, 0, 0),
+	Accent = Color3.fromRGB(114, 100, 255),
 	Text = Color3.fromRGB(240, 240, 240),
 	SubText = Color3.fromRGB(150, 150, 160),
 	Success = Color3.fromRGB(100, 255, 140),
@@ -47,7 +46,7 @@ local Config = {
 	Humanize = true,
 	FingerModel = true,
 	SortMode = "Random",
-	SuffixMode = "ely, irai, abug, lons, ils, coog, akis",
+	SuffixMode = "",
 	LengthMode = 0,
 	AutoPlay = false,
 	AutoJoin = false,
@@ -58,12 +57,12 @@ local Config = {
 	},
 	PanicMode = true,
 	ShowKeyboard = false,
-	ErrorRate = 0,
-	ThinkDelay = 0.4,
+	ErrorRate = 5,
+	ThinkDelay = 0.8,
 	RiskyMistakes = false,
 	CustomWords = {},
 	MinTypeSpeed = 50,
-	MaxTypeSpeed = 100000,
+	MaxTypeSpeed = 3000,
 	KeyboardLayout = "QWERTY"
 }
 
@@ -88,7 +87,7 @@ local isBlatant = Config.Blatant
 local useHumanization = Config.Humanize
 local useFingerModel = Config.FingerModel
 local sortMode = Config.SortMode
-local suffixMode = Config.SuffixMode or "ely, irai, abug, lons, ils, coog, akis"
+local suffixMode = Config.SuffixMode or ""
 local lengthMode = Config.LengthMode or 0
 local autoPlay = Config.AutoPlay
 local autoJoin = Config.AutoJoin
@@ -117,13 +116,6 @@ local lastDetected = "---"
 local lastLogicUpdate = 0
 local lastAutoJoinCheck = 0
 local lastWordCheck = 0
-local lastSuffixCheck = 0
-local lastLengthCheck = 0
-local lastCustomCheck = 0
-local lastBlacklistCheck = 0
-local lastUsedWordsCheck = 0
-local lastSortCheck = 0
-local lastPriorityCheck = 0
 local cachedDetected = ""
 local cachedCensored = false
 local LOGIC_RATE = 0.1
@@ -132,13 +124,13 @@ local UpdateList
 local ButtonCache = {}
 local ButtonData = {}
 local JoinDebounce = {}
-local thinkDelayMin = 0
+local thinkDelayMin = 0.4
 local thinkDelayMax = 1.2
 
 local listUpdatePending = false
 local forceUpdateList = false
 local lastInputTime = 0
-local LIST_DEBOUNCE = 0
+local LIST_DEBOUNCE = 0.05
 local currentBestMatch = nil
 
 if logConn then logConn:Disconnect() end
@@ -239,37 +231,6 @@ LoadList(fileName)
 
 if LoadingGui then LoadingGui:Destroy() end
 
--- Run this once after loading Words (e.g. after LoadList / Buckets are ready)
-local SUFFIX_DEPTH = 4   -- try 3 or 5 depending on your list size
-local SuffixIndex = {}
-
-for _, word in ipairs(Words) do
-	local len = #word
-	if len >= SUFFIX_DEPTH then
-		local suf = word:sub(-SUFFIX_DEPTH):lower()
-		SuffixIndex[suf] = SuffixIndex[suf] or {}
-		table.insert(SuffixIndex[suf], word)
-	end
-	-- Optional: also index shorter suffixes if you want
-	if len >= 3 then
-		local suf3 = word:sub(-3)
-		SuffixIndex[suf3] = SuffixIndex[suf3] or {}
-		table.insert(SuffixIndex[suf3], word)
-	end
-	if len >= 2 then
-		local suf2 = word:sub(-2)
-		SuffixIndex[suf2] = SuffixIndex[suf2] or {}
-		table.insert(SuffixIndex[suf2], word)
-	end
-end
-
--- Optional: sort each suffix group (e.g. longest first)
-for suf, lst in pairs(SuffixIndex) do
-	table.sort(lst, function(a,b) return #a > #b end)   -- or use your SartreScore, etc.
-end
-
-print("Built suffix index with", #SuffixIndex, "entries")
-
 table.sort(Words)
 Buckets = {}
 for _, w in ipairs(Words) do
@@ -319,10 +280,9 @@ local PriorityEndings = {
 	yf   = 1000,
 	pf   = 1000,
 	sb   = 1000,
-	mg   = 1000
+	mg   = 1000,
 }
 
-SuffixIndex = {ely = 1000, aan = 1000, abbi = 1000, abau = 1000, abev = 1000, abic = 1000, hl = 1000, sz = 1000, nk = 1000, fs = 1000, rg = 1000, yf = 1000, pf = 1000, sb = 1000, mg = 1000}   -- suffix → {word1, word2, ...}   sorted by length or priority
 -- Optional: also keep single-letter hard endings as fallback/secondary score
 local HardLetterScores = {
 	x = 15, z = 14, q = 14, j = 13,
@@ -603,7 +563,7 @@ Header.BackgroundColor3 = THEME.ItemBG
 Header.BorderSizePixel = 0
 
 local Title = Instance.new("TextLabel", Header)
-Title.Text = "Help<font color=\"rgb(196,40,28)\">Sartre</font> V5"
+Title.Text = "Word<font color=\"rgb(196,40,28)\">Helper</font> V5"
 Title.RichText = true
 Title.Font = Enum.Font.GothamBold
 Title.TextSize = 18
@@ -1203,22 +1163,6 @@ ServerBrowserBtn.BackgroundColor3 = THEME.Background
 ServerBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
 ServerBrowserBtn.Position = UDim2.new(0, 15, 0, 205)
 Instance.new("UICorner", ServerBrowserBtn).CornerRadius = UDim.new(0, 4)
-
-local TableBrowserBtn = Instance.new("TextButton", TogglesFrame)
-TableBrowserBtn.Text = "Table Browser"
-TableBrowserBtn.Font = Enum.Font.GothamMedium
-TableBrowserBtn.TextSize = 11
-TableBrowserBtn.TextColor3 = Color3.fromRGB(100, 255, 180)   -- light teal
-TableBrowserBtn.BackgroundColor3 = THEME.Background
-TableBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
-TableBrowserBtn.Position = UDim2.new(0, 15, 0, 235)           -- ← adjust this Y value if needed
-Instance.new("UICorner", TableBrowserBtn).CornerRadius = UDim.new(0, 4)
-
-TableBrowserBtn.MouseButton1Click:Connect(function()
-	TableFrame.Visible = not TableFrame.Visible
-	TableFrame.Parent = nil
-	TableFrame.Parent = ScreenGui
-end)
 
 local CustomWordsFrame = Instance.new("Frame", ScreenGui)
 CustomWordsFrame.Name = "CustomWordsFrame"
@@ -1824,7 +1768,7 @@ end
 
 local function CalculateDelay()
 	local charsPerMin = currentCPM
-	local baseDelay = 600 / charsPerMin
+	local baseDelay = 60 / charsPerMin
 	local variance = baseDelay * 0.4
 	return useHumanization and (baseDelay + math.random()*variance - (variance/2)) or baseDelay
 end
@@ -1860,11 +1804,11 @@ end
 local lastKey = nil
 local function CalculateDelayForKeys(prevChar, nextChar)
 	if isBlatant then 
-		return 600 / currentCPM 
+		return 60 / currentCPM 
 	end
 
 	local charsPerMin = currentCPM
-	local baseDelay = 600 / charsPerMin
+	local baseDelay = 60 / charsPerMin
 
 	local variance = baseDelay * 0.35
 	local extra = 0
