@@ -1488,7 +1488,7 @@ local function FetchServers()
 						join.TextColor3 = Color3.fromRGB(255,255,255)
 						Instance.new("UICorner", join).CornerRadius = UDim.new(0, 4)
 
-						join
+						join.MouseButton1Click:Connect(function()
 							join.Text = "Joining..."
 							ShowToast("Teleporting...", "success")
 
