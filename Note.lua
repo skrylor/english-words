@@ -357,6 +357,140 @@ local function GetEndingPriority(word)
 	return HardLetterScores[last] or 0
 end
 
+local TableFrame = Instance.new("Frame", ScreenGui)
+TableFrame.Name = "TableBrowser"
+TableFrame.Size = UDim2.new(0, 320, 0, 380)
+TableFrame.Position = UDim2.new(0.5, -160, 0.5, -190)
+TableFrame.BackgroundColor3 = THEME.Background
+TableFrame.Visible = false
+TableFrame.ClipsDescendants = true
+EnableDragging(TableFrame)
+Instance.new("UICorner", TableFrame).CornerRadius = UDim.new(0, 8)
+local TBStroke = Instance.new("UIStroke", TableFrame)
+TBStroke.Color = THEME.Accent
+TBStroke.Transparency = 0.5
+TBStroke.Thickness = 2
+
+local TBHeader = Instance.new("TextLabel", TableFrame)
+TBHeader.Text = "Table Browser"
+TBHeader.Font = Enum.Font.GothamBold
+TBHeader.TextSize = 16
+TBHeader.TextColor3 = THEME.Text
+TBHeader.Size = UDim2.new(1, 0, 0, 40)
+TBHeader.BackgroundTransparency = 1
+
+local TBClose = Instance.new("TextButton", TableFrame)
+TBClose.Text = "X"
+TBClose.Font = Enum.Font.GothamBold
+TBClose.TextSize = 16
+TBClose.TextColor3 = Color3.fromRGB(255, 100, 100)
+TBClose.Size = UDim2.new(0, 40, 0, 40)
+TBClose.Position = UDim2.new(1, -40, 0, 0)
+TBClose.BackgroundTransparency = 1
+TBClose.MouseButton1Click:Connect(function()
+    TableFrame.Visible = false
+end)
+
+local TBContent = Instance.new("Frame", TableFrame)
+TBContent.Size = UDim2.new(1, -20, 1, -90)
+TBContent.Position = UDim2.new(0, 10, 0, 50)
+TBContent.BackgroundTransparency = 1
+
+local TBLayout = Instance.new("UIListLayout", TBContent)
+TBLayout.Padding = UDim.new(0, 8)
+TBLayout.SortOrder = Enum.SortOrder.LayoutOrder
+TBLayout.FillDirection = Enum.FillDirection.Vertical
+TBLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
+-- Status label (shows current table info or error)
+local TBStatus = Instance.new("TextLabel", TBContent)
+TBStatus.Size = UDim2.new(1, 0, 0, 60)
+TBStatus.BackgroundTransparency = 1
+TBStatus.TextColor3 = THEME.SubText
+TBStatus.Font = Enum.Font.Gotham
+TBStatus.TextSize = 14
+TBStatus.TextWrapped = true
+TBStatus.Text = "Click a table to view starting text"
+TBStatus.TextXAlignment = Enum.TextXAlignment.Center
+
+-- Create 4 table buttons
+local tables = {"1", "2", "3", "4"}
+
+for i, tblName in ipairs(tables) do
+    local btn = Instance.new("TextButton", TBContent)
+    btn.Size = UDim2.new(0.9, 0, 0, 50)
+    btn.BackgroundColor3 = THEME.ItemBG
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 15
+    btn.TextColor3 = THEME.Accent
+    btn.Text = "Table " .. tblName
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 6)
+
+    btn.MouseButton1Click:Connect(function()
+        TBStatus.Text = "Reading Table " .. tblName .. "..."
+        TBStatus.TextColor3 = THEME.Accent
+
+        task.spawn(function()
+            local success, result = pcall(function()
+                local tablesFolder = workspace:FindFirstChild("Tables")
+                if not tablesFolder then
+                    return "Tables folder not found in Workspace"
+                end
+
+                local targetTable = tablesFolder:FindFirstChild(tblName)
+                if not targetTable then
+                    return "Table '" .. tblName .. "' not found"
+                end
+
+                local billboard = targetTable:FindFirstChildWhichIsA("BillboardGui", true)
+                if not billboard then
+                    return "No BillboardGui found in Table " .. tblName
+                end
+
+                local startingLabel = billboard:FindFirstChild("Starting")
+                if not startingLabel or not startingLabel:IsA("TextLabel") then
+                    return "No 'Starting' TextLabel found"
+                end
+
+                return startingLabel.Text ~= "" and startingLabel.Text or "(empty)"
+            end)
+
+            if success then
+                TBStatus.Text = "Table " .. tblName .. ":\n" .. tostring(result)
+                TBStatus.TextColor3 = THEME.Text
+            else
+                TBStatus.Text = "Error reading Table " .. tblName .. "\n" .. tostring(result)
+                TBStatus.TextColor3 = Color3.fromRGB(255, 80, 80)
+            end
+        end)
+    end)
+
+    -- Hover effect
+    btn.MouseEnter:Connect(function()
+        Tween(btn, {BackgroundColor3 = Color3.fromRGB(50,50,65)}, 0.2)
+    end)
+    btn.MouseLeave:Connect(function()
+        Tween(btn, {BackgroundColor3 = THEME.ItemBG}, 0.2)
+    end)
+end
+
+-- Add button to open Table Browser (place near ServerBrowserBtn)
+local TableBrowserBtn = Instance.new("TextButton", TogglesFrame)
+TableBrowserBtn.Text = "Table Browser"
+TableBrowserBtn.Font = Enum.Font.GothamMedium
+TableBrowserBtn.TextSize = 11
+TableBrowserBtn.TextColor3 = Color3.fromRGB(100, 255, 180)   -- light teal-ish
+TableBrowserBtn.BackgroundColor3 = THEME.Background
+TableBrowserBtn.Size = UDim2.new(0, 265, 0, 24)
+TableBrowserBtn.Position = UDim2.new(0, 15, 0, 235)   -- adjust Y position if needed
+Instance.new("UICorner", TableBrowserBtn).CornerRadius = UDim.new(0, 4)
+
+TableBrowserBtn.MouseButton1Click:Connect(function()
+    TableFrame.Visible = not TableFrame.Visible
+    TableFrame.Parent = nil
+    TableFrame.Parent = ScreenGui   -- force re-parent to fix z-index/layer issues
+end)
+
 local function getDistance(s1, s2)
 	if #s1 == 0 then
 		return #s2
@@ -2942,3 +3076,4 @@ inputConn = UserInputService.InputBegan:Connect(function(input)
 	if unloaded then return end
 	if input.KeyCode == TOGGLE_KEY then ScreenGui.Enabled = not ScreenGui.Enabled end
 end)
+
