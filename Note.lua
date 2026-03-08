@@ -218,7 +218,7 @@ local Words = {}
 local SeenWords = {}
 
 local function LoadList(fname)
-	UpdateStatus("Parsing word list...", THEME.Warning)
+	UpdateStatus("Wow word list...", THEME.Warning)
 	if isfile(fname) then
 		local content = readfile(fname)
 		for w in content:gmatch("[^\r\n]+") do
