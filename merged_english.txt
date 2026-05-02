@@ -252583,6 +252583,8 @@ nagasaki
 nagasari
 nagatelite
 nagel
+nagelschmidtite
+nagelschmidtites
 naggar
 nagged
 nagger
